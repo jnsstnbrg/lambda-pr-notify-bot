@@ -5,16 +5,12 @@
 
 :robot: A bot that improve pull request workflow on GitHub.
 
-![](./images/notify_to_slack.png)
-
 ## Features
 
-* :arrows_clockwise: Add automatically reviewers to pull request
-* :bell: Send a direct messages to Slack
+* :bell: Send a message to a Slack channel
   * When the pull request is opened
-  * When the pull request is approved
-  * When the pull request is added mention comment
-* :pushpin: Manege WIP pull request by using a label
+  * When the pull request is closed
+  * When the pull request is merged
 
 ## Configuration
 
