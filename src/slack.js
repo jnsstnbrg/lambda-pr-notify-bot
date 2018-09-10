@@ -7,16 +7,15 @@ export default class Slack {
     this.web = new WebClient(token);
   }
 
-  async postMessage(user, attachments) {
+  async postMessage(channel, attachments) {
     try {
-      const channel = `@${user}`;
       this.web.chat.postMessage(channel, '', { attachments });
     } catch (error) {
       throw new Error(error.message);
     }
   }
 
-  static buildMessage(payload, message, type = '') {
+  static buildMessage(payload, message) {
     const eventType = Object.prototype.hasOwnProperty.call(payload, 'issue')
       ? 'issue'
       : 'pull_request';
@@ -35,30 +34,21 @@ export default class Slack {
       },
     ];
 
-    if (type === 'assignReviewers' || type === 'requestReview') {
-      attachments[0].color = 'warning';
-      attachments[0].text = `:eyes: ${message}`;
-    }
-
-    if (type === 'ableToMerge') {
-      attachments[0].text = `:white_check_mark: ${message}`;
-    }
-
-    if (type === 'mentionComment') {
-      attachments[0].color = 'warning';
-      attachments[0].text = `:eyes: ${message}`;
-
-      const commentType = Object.prototype.hasOwnProperty.call(payload, 'issue')
-        ? 'comment'
-        : 'review';
-      attachments[0].title_link = payload[`${commentType}`].html_url;
-      attachments[0].fields = [
-        {
-          title: 'Comment',
-          value: payload[`${commentType}`].body,
-          short: true,
-        },
-      ];
+    switch (payload.action) {
+      case 'closed':
+        if (payload.pull_request.merged) {
+          attachments[0].color = 'good';
+          attachments[0].text = ':white_check_mark: Pull request merged.';
+        } else {
+          attachments[0].color = 'warning';
+          attachments[0].text =
+            ':negative_squared_cross_mark: Pull request closed.';
+        }
+        break;
+      default:
+        attachments[0].color = 'good';
+        attachments[0].text = `:eyes: ${message}`;
+        break;
     }
 
     return attachments;
