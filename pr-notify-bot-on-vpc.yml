@@ -84,8 +84,8 @@ Resources:
       Environment:
         Variables:
           SECRET_TOKEN: ""
-          GITHUB_API_TOKEN: ""
           SLACK_API_TOKEN: ""
+          SLACK_CHANNEL: ""
       Events:
         Webhook:
           Type: Api

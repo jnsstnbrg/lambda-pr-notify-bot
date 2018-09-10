@@ -1,6 +1,17 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: A slackbot that reminds reviewers to review their pull requests on AWS.
+
+Parameters:
+  SecretToken:
+    Type: String
+    NoEcho: 'True'
+  SlackApiToken:
+    Type: String
+    NoEcho: 'True'
+  SlackChannel:
+    Type: String
+
 Resources:
   GitHubWebhook:
     Type: AWS::Serverless::Api
@@ -72,9 +83,9 @@ Resources:
       Timeout: 10
       Environment:
         Variables:
-          SECRET_TOKEN: ""
-          GITHUB_API_TOKEN: ""
-          SLACK_API_TOKEN: ""
+          SECRET_TOKEN: !Ref SecretToken
+          SLACK_API_TOKEN: !Ref SlackApiToken
+          SLACK_CHANNEL: !Ref SlackChannel
       Events:
         Webhook:
           Type: Api

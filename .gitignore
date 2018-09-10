@@ -1,5 +1,5 @@
 node_modules/
 coverage/
 dist/
-.sam
-.nyc_output
+sam-packaged.yml
+parameters.json

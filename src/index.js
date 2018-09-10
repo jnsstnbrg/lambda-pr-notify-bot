@@ -6,7 +6,6 @@ import {
 } from './handler';
 
 const SECRET_TOKEN = process.env.SECRET_TOKEN || '';
-const GITHUB_API_TOKEN = process.env.GITHUB_API_TOKEN || '';
 const SLACK_API_TOKEN = process.env.SLACK_API_TOKEN || '';
 
 function calculateSignature(secret, payload) {
@@ -31,10 +30,6 @@ exports.handler = async (event, context, callback) => {
 
   if (!SLACK_API_TOKEN) {
     callback(new Error('Slack API Token is not found.'));
-  }
-
-  if (!GITHUB_API_TOKEN) {
-    callback(new Error('GitHub API Token is not found.'));
   }
 
   const calculatedSignature = calculateSignature(
