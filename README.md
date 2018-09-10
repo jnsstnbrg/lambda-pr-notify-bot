@@ -10,6 +10,7 @@
 * :bell: Send a message to a Slack channel
   * When the pull request is opened
   * When the pull request is closed
+  * When the pull request is approved
   * When the pull request is merged
 
 ## Configuration
@@ -60,6 +61,10 @@ Create a parameters.json file.
 
 ```
 [
+  {
+    "ParameterKey": "GitHubApiToken",
+    "ParameterValue": ""
+  },
   {
     "ParameterKey": "SecretToken",
     "ParameterValue": ""

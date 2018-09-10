@@ -15,7 +15,7 @@ export default class Slack {
     }
   }
 
-  static buildMessage(payload, message) {
+  static buildMessage(payload, message, type = '') {
     const eventType = Object.prototype.hasOwnProperty.call(payload, 'issue')
       ? 'issue'
       : 'pull_request';
@@ -34,21 +34,25 @@ export default class Slack {
       },
     ];
 
-    switch (payload.action) {
-      case 'closed':
-        if (payload.pull_request.merged) {
-          attachments[0].color = 'good';
-          attachments[0].text = ':white_check_mark: Pull request merged.';
-        } else {
-          attachments[0].color = 'warning';
-          attachments[0].text =
-            ':negative_squared_cross_mark: Pull request closed.';
-        }
-        break;
-      default:
+    if (payload.action === 'closed') {
+      if (payload.pull_request.merged) {
         attachments[0].color = 'good';
-        attachments[0].text = `:eyes: ${message}`;
-        break;
+        attachments[0].text = ':white_check_mark: Pull request merged.';
+      } else {
+        attachments[0].color = 'warning';
+        attachments[0].text =
+          ':negative_squared_cross_mark: Pull request closed.';
+      }
+    }
+
+    if (['opened', 'reopened', 'synchronize'].includes(payload.action)) {
+      attachments[0].color = 'good';
+      attachments[0].text = `:eyes: ${message}`;
+    }
+
+    if (type === 'ableToMerge') {
+      attachments[0].color = 'good';
+      attachments[0].text = ':white_check_mark: Pull request merged.';
     }
 
     return attachments;

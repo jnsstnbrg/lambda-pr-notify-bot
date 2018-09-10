@@ -8,6 +8,18 @@ Parameters:
   PrivateSubnetIds:
     Description: The list of VPC Private Subnet IDs for running the Lambda Function.
     Type: CommaDelimitedList
+  GitHubApiToken:
+    Type: String
+    NoEcho: 'True'
+  SecretToken:
+    Type: String
+    NoEcho: 'True'
+  SlackApiToken:
+    Type: String
+    NoEcho: 'True'
+  SlackChannel:
+    Type: String
+
 Resources:
   GitHubWebhook:
     Type: AWS::Serverless::Api
@@ -83,9 +95,10 @@ Resources:
         SubnetIds: !Ref PrivateSubnetIds
       Environment:
         Variables:
-          SECRET_TOKEN: ""
-          SLACK_API_TOKEN: ""
-          SLACK_CHANNEL: ""
+          GITHUB_API_TOKEN: !Ref GitHubApiToken
+          SECRET_TOKEN: !Ref SecretToken
+          SLACK_API_TOKEN: !Ref SlackApiToken
+          SLACK_CHANNEL: !Ref SlackChannel
       Events:
         Webhook:
           Type: Api

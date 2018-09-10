@@ -1,5 +1,8 @@
 import crypto from 'crypto';
-import handlePullRequestEvent from './handler';
+import {
+  handlePullRequestEvent,
+  handlePullRequestReviewEvent,
+} from './handler';
 
 const SECRET_TOKEN = process.env.SECRET_TOKEN || '';
 const SLACK_API_TOKEN = process.env.SLACK_API_TOKEN || '';
@@ -42,6 +45,8 @@ exports.handler = async (event, context, callback) => {
 
   if (githubEvent === 'pull_request') {
     await handlePullRequestEvent(payload, callback);
+  } else if (githubEvent === 'pull_request_review') {
+    await handlePullRequestReviewEvent(payload, callback);
   }
 
   callback(null, { message: `event of type ${githubEvent} was ignored.` });
