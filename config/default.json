@@ -1,8 +1,24 @@
 {
   "host": "",
   "pathPrefix": "",
-  "message": {
-    "requestReview": "Please review this pull request.",
-    "ableToMerge": "Able to merge this pull request."
+  "approveComments": ["+1", "LGTM"],
+  "numApprovers": 1,
+  "messages": {
+    "opened": {
+      "message": ":eyes: Please review this pull request.",
+      "color": "good"
+    },
+    "closed": {
+      "message": ":negative_squared_cross_mark: Pull request closed.",
+      "color": "warning"
+    },
+    "approved": {
+      "message": ":white_check_mark: Pull request approved.",
+      "color": "good"
+    },
+    "merged": {
+      "message": ":white_check_mark: Pull request merged.",
+      "color": "good"
+    }
   }
 }

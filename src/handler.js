@@ -30,10 +30,41 @@ export async function handlePullRequestEvent(payload, callback) {
   try {
     const slack = new Slack(SLACK_API_TOKEN);
 
-    if (
-      ['opened', 'reopened', 'closed', 'synchronize'].includes(payload.action)
-    ) {
-      const message = Slack.buildMessage(payload, config.message.requestReview);
+    let message;
+
+    switch (payload.action) {
+      case 'closed':
+        if (payload.pull_request.merged) {
+          message = Slack.buildMessage(
+            payload,
+            config.messages.merged.message,
+            config.messages.merged.color
+          );
+        } else {
+          message = Slack.buildMessage(
+            payload,
+            config.messages.closed.message,
+            config.messages.closed.color
+          );
+        }
+        break;
+      case 'opened':
+      case 'reopened':
+        message = Slack.buildMessage(
+          payload,
+          config.messages.opened.message,
+          config.messages.opened.color
+        );
+        break;
+      default:
+        break;
+    }
+
+    if (!message) {
+      callback(new Error(`Invalid action on pull request: ${payload.action}`));
+    }
+
+    if (['opened', 'reopened', 'closed'].includes(payload.action)) {
       await slack.postMessage(SLACK_CHANNEL, message, 'pullRequest');
     }
   } catch (error) {
@@ -55,6 +86,7 @@ export async function handlePullRequestReviewEvent(payload, callback) {
 
     const pr = new PullRequest(options, GITHUB_API_TOKEN);
     const reviewComments = await pr.getReviewComments(owner, repo, number);
+
     const approveComments = PullRequest.getApproveComments(
       reviewComments,
       config.approveComments
@@ -63,8 +95,8 @@ export async function handlePullRequestReviewEvent(payload, callback) {
     if (approveComments.length === config.numApprovers) {
       const message = Slack.buildMessage(
         payload,
-        config.message.ableToMerge,
-        'ableToMerge'
+        config.messages.approved.message,
+        config.messages.approved.color
       );
       await slack.postMessage(SLACK_CHANNEL, message);
     }

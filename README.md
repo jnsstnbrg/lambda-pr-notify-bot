@@ -51,9 +51,8 @@ Change settings if needed in `config/default.json`.
 {
   "host": "", // Required if using GitHub Enterprise
   "pathPrefix": "", // Required if using GitHub Enterprise
-  "message": { // Message to notify to Slack
-    "requestReview": "Please review this pull request."
-  }
+  "approveComments": ["+1", "LGTM"],
+  "numApprovers": 1
 }
 ```
 

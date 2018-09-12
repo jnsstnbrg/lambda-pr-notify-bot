@@ -1,8 +1,6 @@
 {
   "host": "",
   "pathPrefix": "",
-  "message": {
-    "requestReview": "Please review this pull request.",
-    "ableToMerge": "Able to merge this pull request."
-  }
+  "approveComments": ["+1", "LGTM"],
+  "numApprovers": 1
 }
