@@ -11,6 +11,20 @@ export default class PullRequest {
     });
   }
 
+  async getPullRequest(owner, repo, number) {
+    try {
+      const pullRequest = await this.github.pullRequests.get({
+        owner,
+        repo,
+        number,
+      });
+
+      return pullRequest;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
   async requestReview(owner, repo, number, reviewers) {
     try {
       await this.github.pullRequests.createReviewRequest({

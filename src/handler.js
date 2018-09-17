@@ -76,6 +76,14 @@ export async function handlePullRequestEvent(payload, callback) {
   });
 }
 
+const isLabelDontMerge = async labels => {
+  const dontMergeLabels = labels.filter(
+    label => label.name === "don't merge :hand:"
+  );
+
+  return dontMergeLabels.length > 0;
+};
+
 export async function handlePullRequestReviewEvent(payload, callback) {
   try {
     const number = payload.pull_request.number;
@@ -92,12 +100,23 @@ export async function handlePullRequestReviewEvent(payload, callback) {
       config.approveComments
     );
 
+    const review = await pr.getPullRequest(owner, repo, number);
+
     if (approveComments.length === config.numApprovers) {
-      const message = Slack.buildMessage(
-        payload,
-        config.messages.approved.message,
-        config.messages.approved.color
-      );
+      let message;
+      if (isLabelDontMerge(review.data.labels)) {
+        message = Slack.buildMessage(
+          payload,
+          config.messages.approved_dont_merge.message,
+          config.messages.approved_dont_merge.color
+        );
+      } else {
+        message = Slack.buildMessage(
+          payload,
+          config.messages.approved.message,
+          config.messages.approved.color
+        );
+      }
       await slack.postMessage(SLACK_CHANNEL, message);
     }
   } catch (error) {

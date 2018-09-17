@@ -13,7 +13,11 @@
       "color": "warning"
     },
     "approved": {
-      "message": ":white_check_mark: Pull request approved.",
+      "message": ":white_check_mark: Pull request approved and is ready to be merged.",
+      "color": "good"
+    },
+    "approved_dont_merge": {
+      "message": ":white_check_mark: Pull request approved, but is labeled `don't merge`.",
       "color": "good"
     },
     "merged": {
