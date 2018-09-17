@@ -77,8 +77,8 @@ export async function handlePullRequestEvent(payload, callback) {
 }
 
 const isLabelDontMerge = async labels => {
-  const dontMergeLabels = labels.filter(
-    label => label.name === "don't merge :hand:"
+  const dontMergeLabels = labels.filter(label =>
+    label.name.contains("don't merge")
   );
 
   return dontMergeLabels.length > 0;
