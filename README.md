@@ -1,9 +1,10 @@
-# lambda-pr-notify-bot
+# search-slack-github
 
 [![CircleCI](https://img.shields.io/circleci/project/github/kentaro-m/lambda-pr-notify-bot.svg?style=flat-square)](https://circleci.com/gh/kentaro-m/lambda-pr-notify-bot)
 [![license](https://img.shields.io/github/license/kentaro-m/lambda-pr-notify-bot.svg?style=flat-square)](https://github.com/kentaro-m/lambda-pr-notify-bot/blob/master/LICENSE)
 
 :robot: A bot that improve pull request workflow on GitHub.
+This repository was initially a fork of ![lambda-pr-notify-bot](https://github.com/kentaro-m/lambda-pr-notify-bot)
 
 ## Features
 
